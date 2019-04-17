@@ -14,6 +14,6 @@ export declare class DataTableSummaryRowComponent implements OnChanges {
     _internalColumns: ISummaryColumn[];
     summaryRow: {};
     ngOnChanges(): void;
-    private updateInternalColumns();
-    private updateValues();
+    private updateInternalColumns;
+    private updateValues;
 }
