@@ -371,7 +371,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    */
   updateRows(): void {
     const { first, last } = this.indexes;
-    let rowIndex = first;
+    let rowIndex = first === 0 ? 0 : first - 1;
     let idx = 0;
     const temp: any[] = [];
 
@@ -398,7 +398,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         rowIndex++;
       }
     } else {
-      while (rowIndex < last && rowIndex < this.rowCount) {
+      while (rowIndex <= last && rowIndex < this.rowCount) {
         const row = this.rows[rowIndex];
 
         if (row) {
