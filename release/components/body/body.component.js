@@ -264,7 +264,7 @@ var DataTableBodyComponent = /** @class */ (function () {
      */
     DataTableBodyComponent.prototype.updateRows = function () {
         var _a = this.indexes, first = _a.first, last = _a.last;
-        var rowIndex = first;
+        var rowIndex = first === 0 ? 0 : first - 1;
         var idx = 0;
         var temp = [];
         this.rowIndexes.clear();
@@ -288,7 +288,7 @@ var DataTableBodyComponent = /** @class */ (function () {
             }
         }
         else {
-            while (rowIndex < last && rowIndex < this.rowCount) {
+            while (rowIndex <= last && rowIndex < this.rowCount) {
                 var row = this.rows[rowIndex];
                 if (row) {
                     this.rowIndexes.set(row, rowIndex);
