@@ -23,16 +23,22 @@ var ResizeableDirective = /** @class */ (function () {
     }
     ResizeableDirective.prototype.ngAfterViewInit = function () {
         var renderer2 = this.renderer;
-        var node = renderer2.createElement('span');
+        this.createdNode = renderer2.createElement('span');
         if (this.resizeEnabled) {
-            renderer2.addClass(node, 'resize-handle');
+            renderer2.addClass(this.createdNode, 'resize-handle');
         }
         else {
-            renderer2.addClass(node, 'resize-handle--not-resizable');
+            renderer2.addClass(this.createdNode, 'resize-handle--not-resizable');
         }
-        renderer2.appendChild(this.element, node);
+        renderer2.appendChild(this.element, this.createdNode);
     };
     ResizeableDirective.prototype.ngOnDestroy = function () {
+        if (this.renderer.destroyNode) {
+            this.renderer.destroyNode(this.createdNode);
+        }
+        else {
+            this.renderer.removeChild(this.renderer.parentNode(this.createdNode), this.createdNode);
+        }
         this._destroySubscription();
     };
     ResizeableDirective.prototype.onMouseup = function () {

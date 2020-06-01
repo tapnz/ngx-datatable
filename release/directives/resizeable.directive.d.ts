@@ -6,6 +6,7 @@ export declare class ResizeableDirective implements OnDestroy, AfterViewInit {
     minWidth: number;
     maxWidth: number;
     resize: EventEmitter<any>;
+    createdNode: any;
     element: HTMLElement;
     subscription: Subscription;
     resizing: boolean;
