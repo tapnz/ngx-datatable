@@ -3,7 +3,7 @@ import {
   HostListener, ContentChildren, OnInit, QueryList, AfterViewInit,
   HostBinding, ContentChild, TemplateRef, IterableDiffer,
   DoCheck, KeyValueDiffers, KeyValueDiffer, ViewEncapsulation,
-  ChangeDetectionStrategy, ChangeDetectorRef, SkipSelf
+  ChangeDetectionStrategy, ChangeDetectorRef, SkipSelf, OnDestroy
 } from '@angular/core';
 
 import {
@@ -20,6 +20,8 @@ import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { MouseEvent } from '../events';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-datatable',
@@ -110,7 +112,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
     class: 'ngx-datatable'
   }
 })
-export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
+export class DatatableComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
+  private onDestroy$ = new Subject<any>();
 
   /**
    * Rows that are displayed in the table.
@@ -720,8 +723,17 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * content has been fully initialized.
    */
   ngAfterContentInit() {
-    this.columnTemplates.changes.subscribe(v =>
+    this.columnTemplates.changes.pipe(takeUntil(this.onDestroy$)).subscribe(v =>
       this.translateColumns(v));
+  }
+
+  /**
+   * Lifecycle hook that is called after leaving a component
+   */
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 
   /**

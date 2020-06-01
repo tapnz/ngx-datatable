@@ -31,11 +31,14 @@ var row_detail_1 = require("./row-detail");
 var footer_1 = require("./footer");
 var header_1 = require("./header");
 var BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+var Subject_1 = require("rxjs/Subject");
+var operators_1 = require("rxjs/operators");
 var DatatableComponent = /** @class */ (function () {
     function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs) {
         this.scrollbarHelper = scrollbarHelper;
         this.dimensionsHelper = dimensionsHelper;
         this.cd = cd;
+        this.onDestroy$ = new Subject_1.Subject();
         /**
          * List of row objects that should be
          * represented as selected in the grid.
@@ -512,9 +515,17 @@ var DatatableComponent = /** @class */ (function () {
      */
     DatatableComponent.prototype.ngAfterContentInit = function () {
         var _this = this;
-        this.columnTemplates.changes.subscribe(function (v) {
+        this.columnTemplates.changes.pipe(operators_1.takeUntil(this.onDestroy$)).subscribe(function (v) {
             return _this.translateColumns(v);
         });
+    };
+    /**
+     * Lifecycle hook that is called after leaving a component
+     */
+    DatatableComponent.prototype.ngOnDestroy = function () {
+        this.onDestroy$.next();
+        this.onDestroy$.complete();
+        this.onDestroy$.unsubscribe();
     };
     /**
      * Translates the templates to the column objects

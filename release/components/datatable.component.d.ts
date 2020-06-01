@@ -1,4 +1,4 @@
-import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef } from '@angular/core';
+import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ScrollbarHelper, DimensionsHelper } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
@@ -8,10 +8,11 @@ import { DatatableRowDetailDirective } from './row-detail';
 import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
+export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
     private scrollbarHelper;
     private dimensionsHelper;
     private cd;
+    private onDestroy$;
     /**
      * Rows that are displayed in the table.
      */
@@ -374,6 +375,10 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * content has been fully initialized.
      */
     ngAfterContentInit(): void;
+    /**
+     * Lifecycle hook that is called after leaving a component
+     */
+    ngOnDestroy(): void;
     /**
      * Translates the templates to the column objects
      */
