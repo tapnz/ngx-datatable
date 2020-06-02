@@ -51,9 +51,9 @@ var OrderableDirective = /** @class */ (function () {
                     previousValue.dragEnd.unsubscribe();
                 }
             };
-            diffs.forEachAddedItem(subscribe.bind(this));
+            diffs.forEachAddedItem(subscribe);
             // diffs.forEachChangedItem(subscribe.bind(this));
-            diffs.forEachRemovedItem(unsubscribe_1.bind(this));
+            diffs.forEachRemovedItem(unsubscribe_1);
         }
     };
     OrderableDirective.prototype.onDragStart = function () {
