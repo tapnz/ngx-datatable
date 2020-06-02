@@ -347,6 +347,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.updateIndexes();
     this.updatePage(event.direction);
     this.updateRows();
+    this.cd.detectChanges();
   }
 
   /**

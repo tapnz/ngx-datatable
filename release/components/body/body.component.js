@@ -243,6 +243,7 @@ var DataTableBodyComponent = /** @class */ (function () {
         this.updateIndexes();
         this.updatePage(event.direction);
         this.updateRows();
+        this.cd.detectChanges();
     };
     /**
      * Updates the page given a direction.
