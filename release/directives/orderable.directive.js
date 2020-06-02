@@ -63,7 +63,7 @@ var OrderableDirective = /** @class */ (function () {
             var dragger = _a[_i];
             var elm = dragger.element;
             var left = parseInt(elm.offsetLeft.toString(), 0);
-            this.positions[dragger.dragModel.prop] = {
+            this.positions[dragger.dragModel.$$id] = {
                 left: left,
                 right: left + parseInt(elm.offsetWidth.toString(), 0),
                 index: i++,
@@ -73,7 +73,7 @@ var OrderableDirective = /** @class */ (function () {
     };
     OrderableDirective.prototype.onDragEnd = function (_a) {
         var element = _a.element, model = _a.model, event = _a.event;
-        var prevPos = this.positions[model.prop];
+        var prevPos = this.positions[model.$$id];
         var target = this.isTarget(model, event);
         if (target) {
             this.reorder.emit({
@@ -89,11 +89,11 @@ var OrderableDirective = /** @class */ (function () {
         var x = event.x || event.clientX;
         var y = event.y || event.clientY;
         var targets = this.document.elementsFromPoint(x, y);
-        var _loop_1 = function (prop) {
+        var _loop_1 = function (id) {
             // current column position which throws event.
-            var pos = this_1.positions[prop];
+            var pos = this_1.positions[id];
             // since we drag the inner span, we need to find it in the elements at the cursor
-            if (model.prop !== prop && targets.find(function (el) { return el === pos.element; })) {
+            if (model.$$id !== id && targets.find(function (el) { return el === pos.element; })) {
                 return { value: {
                         pos: pos,
                         i: i
@@ -102,8 +102,8 @@ var OrderableDirective = /** @class */ (function () {
             i++;
         };
         var this_1 = this;
-        for (var prop in this.positions) {
-            var state_1 = _loop_1(prop);
+        for (var id in this.positions) {
+            var state_1 = _loop_1(id);
             if (typeof state_1 === "object")
                 return state_1.value;
         }
